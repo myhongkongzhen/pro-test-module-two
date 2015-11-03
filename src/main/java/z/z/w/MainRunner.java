@@ -8,15 +8,12 @@
 
 package z.z.w;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import z.z.w.server.IServiceLoader;
 import z.z.w.util.SpringContextUtil;
-import z.z.w.util.comm.PropertiesUtils;
 
 import java.net.ServerSocket;
-import java.util.Properties;
 import java.util.ServiceLoader;
 
 /*********************************************************************************************
@@ -35,26 +32,26 @@ public class MainRunner
 	private static final Logger       logger        = LoggerFactory.getLogger( MainRunner.class );
 	private static       ServerSocket serverSocket  = null;
 
-	static
-	{
-		try
-		{
-			Properties props = PropertiesUtils.INSTANCE.getProperties( RELATIVE_PATH );
-			if ( !props.isEmpty() )
-			{
-				String port = props.getProperty( "SINGLE.PROCESS.PORT" );
-				logger.info( "Single process listen port : {}.", port );
-				if ( StringUtils.isNotBlank( port ) ) serverSocket = new ServerSocket( Integer.parseInt( port ) );
-				logger.debug( "serverSocket=>{}.", serverSocket );
-			}
-		}
-		catch ( Exception e )
-		{
-			logger.error( "Single mainRunner processor error : {}.", e.getMessage() );
-			System.exit( 1 );
-		}
-
-	}
+//	static
+//	{
+//		try
+//		{
+//			Properties props = PropertiesUtils.INSTANCE.getProperties( RELATIVE_PATH );
+//			if ( !props.isEmpty() )
+//			{
+//				String port = props.getProperty( "SINGLE.PROCESS.PORT" );
+//				logger.info( "Single process listen port : {}.", port );
+//				if ( StringUtils.isNotBlank( port ) ) serverSocket = new ServerSocket( Integer.parseInt( port ) );
+//				logger.debug( "serverSocket=>{}.", serverSocket );
+//			}
+//		}
+//		catch ( Exception e )
+//		{
+//			logger.error( "Single mainRunner processor error : {}.", e.getMessage() );
+//			System.exit( 1 );
+//		}
+//
+//	}
 
 	public static void main( String[] args )
 	{
