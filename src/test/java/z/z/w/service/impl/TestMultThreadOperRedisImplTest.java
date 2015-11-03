@@ -38,7 +38,9 @@ import javax.annotation.Resource;
 //			testMultThreadOperRedisImpl.getLen( "ZZWTest" );
 //			testMultThreadOperRedisImpl.setSingleData();
 //			testMultThreadOperRedisImpl.getLen( "zzwTest" );
-			testMultThreadOperRedisImpl.setSetDataSingle();
+//			testMultThreadOperRedisImpl.setSetDataSingle();
+//			testMultThreadOperRedisImpl.setListDataSingle();
+			testMultThreadOperRedisImpl.getLLen( "key_list_lpush" );
 
 		}
 		catch ( Exception e )

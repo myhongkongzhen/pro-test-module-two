@@ -163,4 +163,76 @@ import java.util.Map;
 
 		return -1l;
 	}
+
+	@Async public void setListData( String key, String value )
+	{
+		long startTime = System.currentTimeMillis();
+		try
+		{
+			ShardedJedis redisClient = null;
+			try
+			{
+				redisClient = redisOperator.getRedisClient();
+				if ( redisClient == null ) return;
+
+				Long sadd = redisClient.lpush( key, value );
+				logger.info( "更新數據：{}--{}，結果：{}.", key, value, sadd.intValue() );
+			}
+			catch ( Exception e )
+			{
+				logger.error( "更新redis緩存出現錯誤：{}", e.getMessage(), e );
+				redisOperator.returnBrokenResource( redisClient );
+			}
+			finally
+			{
+				redisOperator.returnResource( redisClient );
+			}
+		}
+		catch ( Exception e )
+		{
+			logger.error( "單個數據存入緩存出現異常：{}.", e.getMessage(), e );
+		}
+		finally
+		{
+			logger.info( "單個數據存入緩存完成，用時：{} ms.", ( System.currentTimeMillis() - startTime ) );
+		}
+
+		return;
+	}
+
+	public void getLLen( String key )
+	{
+		long startTime = System.currentTimeMillis();
+		try
+		{
+			ShardedJedis redisClient = null;
+			try
+			{
+				redisClient = redisOperator.getRedisClient();
+				if ( redisClient == null ) return;
+
+				logger.info( "List長度：{}.", redisClient.llen( key ) );
+			}
+			catch ( Exception e )
+			{
+				logger.error( "更新redis緩存出現錯誤：{}", e.getMessage(), e );
+				redisOperator.returnBrokenResource( redisClient );
+			}
+			finally
+			{
+				redisOperator.returnResource( redisClient );
+			}
+		}
+		catch ( Exception e )
+		{
+			logger.error( "單個數據存入緩存出現異常：{}.", e.getMessage(), e );
+		}
+		finally
+		{
+			logger.info( "單個數據存入緩存完成，用時：{} ms.", ( System.currentTimeMillis() - startTime ) );
+		}
+
+		return;
+	}
 }
+
