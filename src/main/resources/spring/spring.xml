@@ -12,8 +12,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean name="springContextUtil" class="z.z.w.util.SpringContextUtil"></bean>
-
     <import resource="spring-base.xml"/>
     <import resource="spring-task.xml"/>
 
