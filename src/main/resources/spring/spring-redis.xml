@@ -56,7 +56,7 @@
     </bean>
 
     <bean id="shardRedisOperator" class="z.z.w.util.redis.ShardRedisOperator"/>
-    <bean id="shardRedisOperator" class="z.z.w.util.redis.SentinelRedisOperator">
+    <bean id="sentinelRedisOperator" class="z.z.w.util.redis.SentinelRedisOperator">
 
     </bean>
 </beans>

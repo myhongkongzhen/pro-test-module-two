@@ -24,11 +24,12 @@ import z.z.w.service.biz.vo.User;
  *      History:
  * </pre>
  *********************************************************************************************/
-@Service public class MultThreadObjectServer
+@Service
+public class MultThreadObjectServer
 {
 	private static final Logger logger = LoggerFactory.getLogger( MultThreadObjectServer.class );
 
-	@Async public void bizOperator( User user )
+	@Async/*( value = "testExecutor" )*/ public void bizOperator( User user )
 	{
 		logger.info( "{}.", user.toString() );
 		try
