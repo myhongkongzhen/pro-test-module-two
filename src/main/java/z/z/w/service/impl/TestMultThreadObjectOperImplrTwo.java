@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import z.z.w.service.IService;
-import z.z.w.service.biz.MultThreadObjectServer;
+import z.z.w.service.biz.MultThreadObjectServerTow;
 import z.z.w.service.biz.vo.User;
 
 import javax.annotation.Resource;
@@ -27,21 +27,23 @@ import javax.annotation.Resource;
  *      History:
  * </pre>
  *********************************************************************************************/
-@Service public class TestMultThreadObjectOperImpl implements IService
+@Service
+public class TestMultThreadObjectOperImplrTwo implements IService
 {
-	private static final Logger logger = LoggerFactory.getLogger( TestMultThreadObjectOperImpl.class );
-	private MultThreadObjectServer multThreadObjectServer;
+	private static final Logger logger = LoggerFactory.getLogger( TestMultThreadObjectOperImplrTwo.class );
+	private MultThreadObjectServerTow multThreadObjectServerTow;
 
-	@Override public void execute()
+	@Override
+	public void execute()
 	{
 		try
 		{
-			for ( int i = 0 ; i < 30 ; i++ )
+			for ( int i = 44 ; i < 130 ; i++ )
 			{
 				User user = new User();
 				user.setAge( i );
 				user.setName( "username_" + i );
-				multThreadObjectServer.bizOperator( user );
+				multThreadObjectServerTow.bizOperator( user );
 			}
 		}
 		catch ( Exception e )
@@ -63,18 +65,20 @@ import javax.annotation.Resource;
 	 *
 	 * @see Thread#run()
 	 */
-	@Override public void run()
+	@Override
+	public void run()
 	{
 		execute();
 	}
 
-	public MultThreadObjectServer getMultThreadObjectServer()
+	public MultThreadObjectServerTow getMultThreadObjectServerTow()
 	{
-		return multThreadObjectServer;
+		return multThreadObjectServerTow;
 	}
 
-	@Resource public void setMultThreadObjectServer( MultThreadObjectServer multThreadObjectServer )
+	@Resource
+	public void setMultThreadObjectServerTow( MultThreadObjectServerTow multThreadObjectServerTow )
 	{
-		this.multThreadObjectServer = multThreadObjectServer;
+		this.multThreadObjectServerTow = multThreadObjectServerTow;
 	}
 }

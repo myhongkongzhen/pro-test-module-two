@@ -27,17 +27,18 @@ import javax.annotation.Resource;
  * </pre>
  *********************************************************************************************/
 @Service
-public class MultThreadObjectServer
+public class MultThreadObjectServerTow
 {
-	private static final Logger logger = LoggerFactory.getLogger( MultThreadObjectServer.class );
+	private static final Logger logger = LoggerFactory.getLogger( MultThreadObjectServerTow.class );
 
 	private MultThreadObjectServerPrint multThreadObjectServerPrint;
 
-	@Async/*( value = "testExecutor" )*/ public void bizOperator( User user )
+	@Async( value = "testExecutor" )
+	public void bizOperator( User user )
 	{
-		logger.info( "=========================={}.", user.toString() );
+		logger.info( "============MultThreadObjectServerTow=============={}.", user.toString() );
 		multThreadObjectServerPrint.bizOperator( user );
-		logger.info( "=========================>{}.", user.toString() );
+		logger.info( "============MultThreadObjectServerTow=============>{}.", user.toString() );
 
 	}
 

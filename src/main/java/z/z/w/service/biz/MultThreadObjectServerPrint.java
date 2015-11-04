@@ -10,45 +10,35 @@ package z.z.w.service.biz;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import z.z.w.service.biz.vo.User;
 
-import javax.annotation.Resource;
-
 /*********************************************************************************************
  * <pre>
- *     FileName: z.z.w.service.biz.MultThreadObjectServer
+ *     FileName: z.z.w.service.biz.MultThreadObjectServerPrint
  *         Desc:
  *       author: Z_Z.W - myhongkongzhen@gmail.com
- *      version: 2015-11-03 17:22
- *   LastChange: 2015-11-03 17:22
+ *      version: 2015-11-04 17:59
+ *   LastChange: 2015-11-04 17:59
  *      History:
  * </pre>
  *********************************************************************************************/
 @Service
-public class MultThreadObjectServer
+public class MultThreadObjectServerPrint
 {
-	private static final Logger logger = LoggerFactory.getLogger( MultThreadObjectServer.class );
+	private static final Logger logger = LoggerFactory.getLogger( MultThreadObjectServerPrint.class );
 
-	private MultThreadObjectServerPrint multThreadObjectServerPrint;
-
-	@Async/*( value = "testExecutor" )*/ public void bizOperator( User user )
+	public void bizOperator( User user )
 	{
-		logger.info( "=========================={}.", user.toString() );
-		multThreadObjectServerPrint.bizOperator( user );
-		logger.info( "=========================>{}.", user.toString() );
+		logger.info( "{}.", user.toString() );
+		try
+		{
+			Thread.sleep( user.getAge() / 200 );
+		}
+		catch ( InterruptedException e )
+		{
+		}
+		logger.info( "====>{}.", user.toString() );
 
-	}
-
-	public MultThreadObjectServerPrint getMultThreadObjectServerPrint()
-	{
-		return multThreadObjectServerPrint;
-	}
-
-	@Resource
-	public void setMultThreadObjectServerPrint( MultThreadObjectServerPrint multThreadObjectServerPrint )
-	{
-		this.multThreadObjectServerPrint = multThreadObjectServerPrint;
 	}
 }
