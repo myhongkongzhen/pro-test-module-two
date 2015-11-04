@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPipeline;
-import z.z.w.util.ShardRedisOperator;
+import z.z.w.util.redis.ShardRedisOperator;
 
 import javax.annotation.Resource;
 import java.util.List;
