@@ -34,13 +34,13 @@ import javax.annotation.Resource;
 	{
 		try
 		{
-//			testMultThreadOperRedisImpl.execute();
+			testMultThreadOperRedisImpl.execute();
 //			testMultThreadOperRedisImpl.getLen( "ZZWTest" );
 //			testMultThreadOperRedisImpl.setSingleData();
 //			testMultThreadOperRedisImpl.getLen( "zzwTest" );
 //			testMultThreadOperRedisImpl.setSetDataSingle();
 //			testMultThreadOperRedisImpl.setListDataSingle();
-			testMultThreadOperRedisImpl.getLLen( "key_list_lpush" );
+//			testMultThreadOperRedisImpl.getLLen( "key_list_lpush" );
 
 		}
 		catch ( Exception e )

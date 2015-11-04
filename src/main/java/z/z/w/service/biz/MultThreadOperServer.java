@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPipeline;
-import z.z.w.util.RedisOperator;
+import z.z.w.util.ShardRedisOperator;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,18 +30,20 @@ import java.util.Map;
  *      History:
  * </pre>
  *********************************************************************************************/
-@Service public class MultThreadOperServer
+@Service
+public class MultThreadOperServer
 {
 	private static final Logger logger = LoggerFactory.getLogger( MultThreadOperServer.class );
 
-	private RedisOperator redisOperator;
+	private ShardRedisOperator shardRedisOperator;
 
-	@Async public void setBathdata( Map<String, String> map )
+	@Async
+	public void setBathdata( Map<String, String> map )
 	{
 		long startTime = System.currentTimeMillis();
 		try
 		{
-			String set = redisOperator.set( "ZZWTest", map );
+			String set = shardRedisOperator.set( "ZZWTest", map );
 
 			logger.info( "更新REDIS緩存信息結果：{}.", set );
 		}
@@ -55,12 +57,13 @@ import java.util.Map;
 		}
 	}
 
-	@Async public void setSingledata( String key, String value )
+	@Async
+	public void setSingledata( String key, String value )
 	{
 		long startTime = System.currentTimeMillis();
 		try
 		{
-			Long hset = redisOperator.hset( "zzwTest", key, value );
+			Long hset = shardRedisOperator.hset( "zzwTest", key, value );
 			logger.info( "存入緩存數據：{}-{}，結果：{}.", key, value, hset );
 		}
 		catch ( Exception e )
@@ -73,22 +76,24 @@ import java.util.Map;
 		}
 	}
 
-	public RedisOperator getRedisOperator()
+	public ShardRedisOperator getShardRedisOperator()
 	{
-		return redisOperator;
+		return shardRedisOperator;
 	}
 
-	@Resource public void setRedisOperator( RedisOperator redisOperator )
+	@Resource
+	public void setShardRedisOperator( ShardRedisOperator shardRedisOperator )
 	{
-		this.redisOperator = redisOperator;
+		this.shardRedisOperator = shardRedisOperator;
 	}
 
 	public long getLen( String key )
 	{
-		return redisOperator.hlen( key );
+		return shardRedisOperator.hlen( key );
 	}
 
-	@Async public List<Object> setSetSingle( String key, String value )
+	@Async
+	public List<Object> setSetSingle( String key, String value )
 	{
 		long startTime = System.currentTimeMillis();
 		try
@@ -96,7 +101,7 @@ import java.util.Map;
 			ShardedJedis redisClient = null;
 			try
 			{
-				redisClient = redisOperator.getRedisClient();
+				redisClient = shardRedisOperator.getRedisClient();
 				if ( redisClient == null ) return null;
 				ShardedJedisPipeline pipelined = redisClient.pipelined();
 
@@ -108,11 +113,11 @@ import java.util.Map;
 			catch ( Exception e )
 			{
 				logger.error( "更新redis緩存出現錯誤：{}", e.getMessage(), e );
-				redisOperator.returnBrokenResource( redisClient );
+				shardRedisOperator.returnBrokenResource( redisClient );
 			}
 			finally
 			{
-				redisOperator.returnResource( redisClient );
+				shardRedisOperator.returnResource( redisClient );
 			}
 		}
 		catch ( Exception e )
@@ -127,7 +132,8 @@ import java.util.Map;
 		return null;
 	}
 
-	@Async public Long setSetSingleNoPipe( String key, String value )
+	@Async
+	public Long setSetSingleNoPipe( String key, String value )
 	{
 		long startTime = System.currentTimeMillis();
 		try
@@ -135,21 +141,21 @@ import java.util.Map;
 			ShardedJedis redisClient = null;
 			try
 			{
-				redisClient = redisOperator.getRedisClient();
+				redisClient = shardRedisOperator.getRedisClient();
 				if ( redisClient == null ) return -2l;
 
 				Long sadd = redisClient.sadd( key, value );
 				logger.debug( "更新數據：{}--{}，結果：{}.", key, value, sadd.intValue() );
-				logger.info( "{}===={}", this, redisOperator );
+				logger.info( "{}===={}", this, shardRedisOperator );
 			}
 			catch ( Exception e )
 			{
 				logger.error( "更新redis緩存出現錯誤：{}", e.getMessage(), e );
-				redisOperator.returnBrokenResource( redisClient );
+				shardRedisOperator.returnBrokenResource( redisClient );
 			}
 			finally
 			{
-				redisOperator.returnResource( redisClient );
+				shardRedisOperator.returnResource( redisClient );
 			}
 		}
 		catch ( Exception e )
@@ -164,7 +170,8 @@ import java.util.Map;
 		return -1l;
 	}
 
-	@Async public void setListData( String key, String value )
+	@Async
+	public void setListData( String key, String value )
 	{
 		long startTime = System.currentTimeMillis();
 		try
@@ -172,7 +179,7 @@ import java.util.Map;
 			ShardedJedis redisClient = null;
 			try
 			{
-				redisClient = redisOperator.getRedisClient();
+				redisClient = shardRedisOperator.getRedisClient();
 				if ( redisClient == null ) return;
 
 				Long sadd = redisClient.lpush( key, value );
@@ -181,11 +188,11 @@ import java.util.Map;
 			catch ( Exception e )
 			{
 				logger.error( "更新redis緩存出現錯誤：{}", e.getMessage(), e );
-				redisOperator.returnBrokenResource( redisClient );
+				shardRedisOperator.returnBrokenResource( redisClient );
 			}
 			finally
 			{
-				redisOperator.returnResource( redisClient );
+				shardRedisOperator.returnResource( redisClient );
 			}
 		}
 		catch ( Exception e )
@@ -208,7 +215,7 @@ import java.util.Map;
 			ShardedJedis redisClient = null;
 			try
 			{
-				redisClient = redisOperator.getRedisClient();
+				redisClient = shardRedisOperator.getRedisClient();
 				if ( redisClient == null ) return;
 
 				logger.info( "List長度：{}.", redisClient.llen( key ) );
@@ -216,11 +223,11 @@ import java.util.Map;
 			catch ( Exception e )
 			{
 				logger.error( "更新redis緩存出現錯誤：{}", e.getMessage(), e );
-				redisOperator.returnBrokenResource( redisClient );
+				shardRedisOperator.returnBrokenResource( redisClient );
 			}
 			finally
 			{
-				redisOperator.returnResource( redisClient );
+				shardRedisOperator.returnResource( redisClient );
 			}
 		}
 		catch ( Exception e )
@@ -234,5 +241,6 @@ import java.util.Map;
 
 		return;
 	}
+
 }
 

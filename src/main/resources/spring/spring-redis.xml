@@ -11,7 +11,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxWaitMillis" value="${redis.maxWaitMillis}"></property>
         <property name="numTestsPerEvictionRun" value="${redis.numTestsPerEvictionRun}"></property>
@@ -23,8 +22,25 @@
         <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
         <property name="testOnReturn" value="${redis.testOnReturn}"/>
     </bean>
+
+    <!-- 哨兵方式連接redis -->
+    <bean id="jedisSentinelPool" class="redis.clients.jedis.JedisSentinelPool">
+        <constructor-arg index="0" value="mymaster"/>
+        <constructor-arg index="1">
+            <set>
+                <value>${redis.sentinel.host}</value>
+            </set>
+        </constructor-arg>
+        <constructor-arg index="2" ref="jedisPoolConfig"/>
+        <constructor-arg index="3" value="${redis.timeout}"/>
+        <constructor-arg index="4" value="${redis.password}"/>
+        <constructor-arg index="5" value="8"/>
+    </bean>
+
+    <!-- 集群方式連接redis -->
     <bean id="jedis.shardInfo" class="redis.clients.jedis.JedisShardInfo">
-        <constructor-arg name="host" value="${redis.host}"/>
+        <constructor-arg name="host" value="${redis.shard.host}"/>
+        <constructor-arg name="name" value="${redis.name}"/>
         <property name="password" value="${redis.password}"/>
         <property name="soTimeout" value="${redis.timeout}"/>
         <property name="connectionTimeout" value="${redis.timeout}"/>
@@ -39,6 +55,8 @@
         </constructor-arg>
     </bean>
 
-    <bean id="redisOperator" class="z.z.w.util.RedisOperator"/>
+    <bean id="shardRedisOperator" class="z.z.w.util.ShardRedisOperator"/>
+    <bean id="shardRedisOperator" class="z.z.w.util.SentinelRedisOperator">
 
+    </bean>
 </beans>
